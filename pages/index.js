@@ -4,19 +4,15 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import CharacterCard from "../components/characterCard";
-
-const Title = styled(motion.h1)`
-  margin: 0;
-  line-height: 1.2;
-  font-size: 4rem;
-`;
+import CharacterCard from "../components/CharacterCard";
+import Filter from "../components/Filter";
 
 const MainFlexColumn = styled(motion.main)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: #f7f7f9;
 `;
 
 const CharactersGallery = styled(motion.main)`
@@ -25,11 +21,44 @@ const CharactersGallery = styled(motion.main)`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 16px;
 `;
+
+// 🌀 Variants
+const container = {
+  hidden: {
+    opacity: 0,
+    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.07 },
+  },
+};
+
+const client = {
+  hidden: {
+    opacity: 0,
+    y: -10,
+    transition: {
+      duration: 0.3,
+    },
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
 
 export default function Home(results) {
   const initial = results;
   const [characters, setCharacters] = React.useState(initial.characters);
+  // Filter for Dimension
+  const [industriesFilter, setIndustriesFilter] = React.useState("all");
+
   console.log(initial);
 
   return (
@@ -45,10 +74,19 @@ export default function Home(results) {
 
       <MainFlexColumn>
         <h1>Welcome to the Rick and Morty database</h1>
-        <CharactersGallery>
+        <Filter></Filter>
+        <CharactersGallery
+          animate={"show"}
+          variants={container}
+          initial="hidden"
+        >
           {characters.map((char) => {
             return (
-              <CharacterCard key={char.id} character={char}></CharacterCard>
+              <CharacterCard
+                variants={client}
+                key={char.id}
+                character={char}
+              ></CharacterCard>
             );
           })}
         </CharactersGallery>
