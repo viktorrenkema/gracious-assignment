@@ -6,6 +6,7 @@ import { gql, useQuery } from "@apollo/client";
 import CharacterCard from "../components/CharacterCard";
 import Filter from "../components/Filter";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
+import Link from "next/link";
 
 const MainFlexColumn = styled(motion.main)`
   display: flex;
@@ -54,8 +55,8 @@ const client = {
 };
 
 const INITIAL_DATA_QUERY = gql`
-  query FetchInitialData($id: Int) {
-    locations(page: 1) {
+  query FetchInitialData($id: Int, $locationPage: Int) {
+    locations(page: $locationPage) {
       info {
         count
         pages
@@ -107,12 +108,14 @@ const INITIAL_DATA_QUERY = gql`
 
 export default function Home() {
   const [characters, setCharacters] = React.useState([]);
+
   const [locations, setLocations] = React.useState([]);
-  const [dimensions, setDimensions] = React.useState([]);
   const [episodes, setEpisodes] = React.useState([]);
+  const [dimensions, setDimensions] = React.useState([]);
 
   // Set which page we're quering with graphQL
   const [queryPage, setQueryPage] = React.useState(1);
+  const [locPage, setLocPage] = React.useState(1);
 
   // Search filters
   const [episodeFilter, setEpisodeFilter] = React.useState({
@@ -129,46 +132,67 @@ export default function Home() {
   });
 
   const { data, fetchMore } = useQuery(INITIAL_DATA_QUERY, {
-    variables: { id: queryPage },
+    variables: { id: queryPage, locationPage: locPage },
   });
 
-  React.useEffect(() => {
-    fetchMore({ variables: { id: queryPage } });
-  }, [fetchMore, queryPage]);
+  ///////////////
 
+  // Gets *all* characters (note: 800+, not performant)
+  // React.useEffect(() => {
+  //   if (!data) return;
+  //   if (queryPage >= Math.ceil(data.characters.info.count / 20)) return;
+  //   setQueryPage((queryPage) => queryPage + 1);
+  //   fetchMore({ variables: { id: queryPage } });
+  //   setCharacters(characters.concat(data.characters.results));
+  // }, [fetchMore, data]);
+
+  // Old, working for basic data
   React.useEffect(() => {
     if (!data) return;
-    if (data.locations) setLocations(data.locations.results);
-    // if (data.locations) setDimensions(data.locations.results);
+    console.log("run");
     if (data.characters) setCharacters(data.characters.results);
-    if (data.episodes) setEpisodes(data.episodes.results);
   }, [data]);
 
+  ///////////
+
+  // // Ensure we get all **locations**
+  // React.useEffect(() => {
+  //   if (!data) return;
+  //   if (locPage >= Math.ceil(data.locations.info.count / 20) + 1) return;
+  //   setLocPage((locPage) => locPage + 1);
+  //   fetchMore({ variables: { id: 1, locationPage: locPage } });
+  //   setLocations(locations.concat(data.locations.results));
+  // }, [fetchMore, data]);
+
+  console.log(data);
+  // console.log(characters);
+  // console.log(locations);
+
   // Locations passed to Filter
-  const locationOptions = locations.map((location) => {
-    return {
-      label: location.name,
-      value: location.id,
-    };
-  });
+  // const locationOptions = locations.map((location) => {
+  //   return {
+  //     label: location.name,
+  //     value: location.id,
+  //   };
+  // });
 
-  // Dimensions passed to Filter
-  const dimensionOptions = dimensions.map((dimension) => {
-    return {
-      label: dimension.name,
-      value: dimension.id,
-    };
-  });
+  // // Dimensions passed to Filter
+  // const dimensionOptions = dimensions.map((dimension) => {
+  //   return {
+  //     label: dimension.name,
+  //     value: dimension.id,
+  //   };
+  // });
 
-  // Episodes passed to Filter
-  const episodeOptions = episodes.map((episodes) => {
-    return {
-      label: episodes.name,
-      value: episodes.id,
-    };
-  });
+  // // Episodes passed to Filter
+  // const episodeOptions = episodes.map((episodes) => {
+  //   return {
+  //     label: episodes.name,
+  //     value: episodes.id,
+  //   };
+  // });
 
-  console.log(characters);
+  // console.log(characters);
 
   const filterCharacters = () => {
     // If both filters are set to All, return all characters retrieved from API
@@ -216,21 +240,20 @@ export default function Home() {
       <MainFlexColumn>
         <h1>Welcome to the Rick and Morty database</h1>
         <Filter
+          filterType={"episode"}
           label={"episode"}
           value={episodeFilter.value}
-          options={episodeOptions}
           onChange={setEpisodeFilter}
         ></Filter>
         <Filter
+          filterType={"location"}
           label={"location"}
           value={locationFilter.value}
-          options={locationOptions}
           onChange={setLocationFilter}
         ></Filter>
         {/* <Filter
           label={"dimension"}
           value={dimensionFilter}
-          options={dimensionOptions}
           onChange={setDimensionFilter}
         ></Filter> */}
         <CharactersGallery
@@ -240,11 +263,15 @@ export default function Home() {
         >
           {filterCharacters().map((char) => {
             return (
-              <CharacterCard
-                variants={client}
-                key={char.id}
-                character={char}
-              ></CharacterCard>
+              <Link key={char.id} href={`/character/${char.id}`} passHref>
+                <a>
+                  <CharacterCard
+                    variants={client}
+                    key={char.id}
+                    character={char}
+                  ></CharacterCard>
+                </a>
+              </Link>
             );
           })}
         </CharactersGallery>
@@ -258,7 +285,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: INITIAL_DATA_QUERY,
-    variables: { id: 1 },
+    variables: { id: 1, locationPage: 1 },
   });
 
   return addApolloState(apolloClient, {

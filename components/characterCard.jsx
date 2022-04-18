@@ -31,10 +31,11 @@ const Span = styled(motion.span)``
 const StyledImage = styled(Image)`border-radius: 16px;`
 
 export default function CharacterCard(props) {
-    const {character, variants, location} = props
+    const {character, variants, location, href} = props
 
     // console.log(character)
     return (
+      
         <CardContainer variants={variants}>
             <StyledImage width={200} height={200} alt={`An image of ${character.name}`} src={character.image}></StyledImage>
             <BioElContainer>
@@ -52,6 +53,11 @@ export default function CharacterCard(props) {
                 <Title>First episode</Title>
                 <Span>{character.episode[0].name}</Span>
             </BioElContainer>
+                <BioElContainer>
+                <Title>ID</Title>
+                <Span>{character.id}</Span>
+            </BioElContainer>
         </CardContainer>
+
     )
 }
