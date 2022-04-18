@@ -8,12 +8,20 @@ import Filter from "../components/Filter";
 import { addApolloState, initializeApollo } from "../lib/apolloClient";
 import Link from "next/link";
 
+const H1 = styled(motion.h1)`
+  font-family: "DM Mono", monospace;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+`;
+
 const MainFlexColumn = styled(motion.main)`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: #f7f7f9;
+  padding: 2rem 4rem;
 `;
 
 const CharactersGallery = styled(motion.main)`
@@ -21,19 +29,20 @@ const CharactersGallery = styled(motion.main)`
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
+  margin-top: 2rem;
 `;
 
 // 🌀 Variants
 const container = {
   hidden: {
     opacity: 0,
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: { staggerChildren: 0.25, staggerDirection: -1 },
   },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.07 },
+    transition: { staggerChildren: 0.27 },
   },
 };
 
@@ -176,7 +185,7 @@ export default function Home() {
       </Head>
 
       <MainFlexColumn>
-        <h1>Welcome to the Rick and Morty database</h1>
+        <H1>Rick and Morty database</H1>
         <Filter
           filterType={"episode"}
           label={"episode"}
