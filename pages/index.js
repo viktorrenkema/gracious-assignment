@@ -55,28 +55,7 @@ const client = {
 };
 
 const INITIAL_DATA_QUERY = gql`
-  query FetchInitialData($id: Int, $locationPage: Int) {
-    locations(page: $locationPage) {
-      info {
-        count
-        pages
-      }
-      results {
-        name
-        id
-        dimension
-      }
-    }
-    episodes(page: 1) {
-      info {
-        count
-        pages
-      }
-      results {
-        name
-        id
-      }
-    }
+  query FetchInitialData($id: Int) {
     characters(page: $id) {
       info {
         count
@@ -109,13 +88,8 @@ const INITIAL_DATA_QUERY = gql`
 export default function Home() {
   const [characters, setCharacters] = React.useState([]);
 
-  const [locations, setLocations] = React.useState([]);
-  const [episodes, setEpisodes] = React.useState([]);
-  const [dimensions, setDimensions] = React.useState([]);
-
   // Set which page we're quering with graphQL
   const [queryPage, setQueryPage] = React.useState(1);
-  const [locPage, setLocPage] = React.useState(1);
 
   // Search filters
   const [episodeFilter, setEpisodeFilter] = React.useState({
@@ -132,7 +106,7 @@ export default function Home() {
   });
 
   const { data, fetchMore } = useQuery(INITIAL_DATA_QUERY, {
-    variables: { id: queryPage, locationPage: locPage },
+    variables: { id: queryPage },
   });
 
   ///////////////
@@ -146,53 +120,15 @@ export default function Home() {
   //   setCharacters(characters.concat(data.characters.results));
   // }, [fetchMore, data]);
 
-  // Old, working for basic data
+  // Old, working but only returning first 20 results
   React.useEffect(() => {
     if (!data) return;
-    console.log("run");
     if (data.characters) setCharacters(data.characters.results);
   }, [data]);
 
   ///////////
 
-  // // Ensure we get all **locations**
-  // React.useEffect(() => {
-  //   if (!data) return;
-  //   if (locPage >= Math.ceil(data.locations.info.count / 20) + 1) return;
-  //   setLocPage((locPage) => locPage + 1);
-  //   fetchMore({ variables: { id: 1, locationPage: locPage } });
-  //   setLocations(locations.concat(data.locations.results));
-  // }, [fetchMore, data]);
-
-  console.log(data);
-  // console.log(characters);
-  // console.log(locations);
-
-  // Locations passed to Filter
-  // const locationOptions = locations.map((location) => {
-  //   return {
-  //     label: location.name,
-  //     value: location.id,
-  //   };
-  // });
-
-  // // Dimensions passed to Filter
-  // const dimensionOptions = dimensions.map((dimension) => {
-  //   return {
-  //     label: dimension.name,
-  //     value: dimension.id,
-  //   };
-  // });
-
-  // // Episodes passed to Filter
-  // const episodeOptions = episodes.map((episodes) => {
-  //   return {
-  //     label: episodes.name,
-  //     value: episodes.id,
-  //   };
-  // });
-
-  // console.log(characters);
+  // console.log(data);
 
   const filterCharacters = () => {
     // If both filters are set to All, return all characters retrieved from API
@@ -211,8 +147,8 @@ export default function Home() {
       episodeFilter.label !== "All" &&
       locationFilter.label === "All"
     ) {
-      return characters.filter(
-        (ch) => ch.episode[0].name === episodeFilter.label
+      return characters.filter((element) =>
+        element.episode.some((episode) => episode.name === episodeFilter.label)
       );
     } else if (
       episodeFilter.label !== "All" &&
@@ -225,6 +161,8 @@ export default function Home() {
       );
     }
   };
+
+  console.log(filterCharacters());
 
   return (
     <div>
@@ -285,7 +223,7 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: INITIAL_DATA_QUERY,
-    variables: { id: 1, locationPage: 1 },
+    variables: { id: 1 },
   });
 
   return addApolloState(apolloClient, {

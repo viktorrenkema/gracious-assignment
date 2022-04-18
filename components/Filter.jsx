@@ -86,7 +86,7 @@ export default function Filter({filterType, value, onChange, label }) {
     }
   }, [fetchMore, data]);
 
-  console.log(locations)
+
 
   function handleChange(event) {
     const value = event.target.value
