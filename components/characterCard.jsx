@@ -165,12 +165,12 @@ export default function CharacterCard(props) {
       animate={animate}
       initial={initial}
       variants={variants}
-      onHoverStart={() => {
-        setHover(true);
-      }}
-      onHoverEnd={() => {
-        setHover(false);
-      }}
+      // onHoverStart={() => {
+      //   setHover(true);
+      // }}
+      // onHoverEnd={() => {
+      //   setHover(false);
+      // }}
     >
       <RelativeContainer>
         <motion.div
