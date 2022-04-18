@@ -84,7 +84,7 @@ const DetailsContainer = styled(motion.div)`
   align-items: center;
 `;
 
-const DetailType = styled(motion.span)`
+export const DetailType = styled(motion.span)`
   font-weight: 700;
   font-family: "DM Sans", sans-serif;
   color: #7d7d7d;
@@ -109,13 +109,54 @@ const DetailData = styled(motion.span)`
 
 const StyledImage = styled(Image)`
   border-radius: 16px;
+  overflow: visible;
+  box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 12%);
 `;
 
+const nameVariants = {
+  default: {
+    y: 0,
+  },
+  hover: {
+    y: -10,
+  },
+};
+
+const idVariants = {
+  default: {
+    opacity: 1,
+  },
+  hover: {
+    opacity: 0,
+  },
+};
+
 export default function CharacterCard(props) {
+  const [hover, setHover] = React.useState(false);
   const { character, variants } = props;
 
+  const str = character.name;
+  const maxLen = 17;
+  let charName = character.name;
+
+  if (str.length > maxLen) {
+    let result = str.substr(0, maxLen);
+    charName = result.substr(
+      0,
+      Math.min(result.length, result.lastIndexOf(" "))
+    );
+  }
+
   return (
-    <CardContainer variants={variants}>
+    <CardContainer
+      variants={variants}
+      onHoverStart={() => {
+        setHover(true);
+      }}
+      onHoverEnd={() => {
+        setHover(false);
+      }}
+    >
       <RelativeContainer>
         <StyledImage
           width={200}
@@ -126,8 +167,21 @@ export default function CharacterCard(props) {
         <AbsoluteShade>
           {" "}
           <OverlayDetailsContainer>
-            <IDSpan>#{character.id}</IDSpan>
-            <Title title={character.name}>{character.name}</Title>
+            <IDSpan
+              variants={idVariants}
+              initial="default"
+              animate={hover ? "hover" : "default"}
+            >
+              #{character.id}
+            </IDSpan>
+            <Title
+              variants={nameVariants}
+              initial="default"
+              animate={hover ? "hover" : "default"}
+              title={character.name}
+            >
+              {charName}
+            </Title>
           </OverlayDetailsContainer>
         </AbsoluteShade>
       </RelativeContainer>
@@ -145,7 +199,7 @@ export default function CharacterCard(props) {
         </DetailData>
       </DetailsContainer>
       <DetailsContainer>
-        <DetailType>First episode</DetailType>
+        <DetailType>1st episode</DetailType>
         <DetailData title={character.episode[0].name}>
           {character.episode[0].name}
         </DetailData>

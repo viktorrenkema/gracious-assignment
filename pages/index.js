@@ -7,6 +7,7 @@ import styled from "styled-components";
 import CharacterCard from "../components/CharacterCard";
 import Filter from "../components/Filter";
 import Link from "next/link";
+import { DetailType } from "../components/CharacterCard";
 
 // 🧰 Utils
 import Head from "next/head";
@@ -38,6 +39,18 @@ const CharactersGallery = styled(motion.main)`
   justify-content: flex-start;
   gap: 16px;
   margin-top: 2rem;
+`;
+
+const InlineHyperlink = styled(motion.a)`
+  display: inline;
+  text-decoration: underline;
+  font-weight: 700;
+  font-family: "DM Sans", sans-serif;
+  color: #525252;
+  font-size: 10px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 `;
 
 // 🌀 Variants
@@ -176,7 +189,23 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <motion.div
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      transition={{
+        type: "spring",
+        mass: 0.35,
+        stiffness: 75,
+        duration: 0.3,
+      }}
+    >
       <Head>
         <title>Rick and Morty finder</title>
         <meta
@@ -188,6 +217,15 @@ export default function Home() {
 
       <MainFlexColumn>
         <H1>Rick and Morty database</H1>
+        <DetailType>
+          built for gracious -{" "}
+          <InlineHyperlink
+            target="_blank"
+            href="https://github.com/viktorrenkema/gracious-assignment"
+          >
+            view github
+          </InlineHyperlink>
+        </DetailType>
         <Filter
           filterType={"episode"}
           label={"episode"}
@@ -220,7 +258,7 @@ export default function Home() {
           })}
         </CharactersGallery>
       </MainFlexColumn>
-    </div>
+    </motion.div>
   );
 }
 
