@@ -1,7 +1,15 @@
+// 📦 Packages
 import * as React from "react";
 import styled from "styled-components";
+
+// 🌱 Components
+
+// 🧰 Utils
 import { gql, useQuery } from "@apollo/client";
 
+// 🌀 Variants
+
+// 💅🏽 Styled Components
 const FilterWrapper = styled.div`
   display: flex;
   padding: 1rem 0rem 0rem 0rem;
@@ -25,25 +33,6 @@ const Select = styled.select`
   background: #ededed;
   border-radius: 8px;
   padding-left: 8px;
-  ::after {
-    content: "<>";
-    font: 17px "Consolas", monospace;
-    color: #333;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
-    right: 11px;
-    /*Adjust for position however you want*/
-
-    top: 18px;
-    padding: 0 0 2px;
-    border-bottom: 1px solid #999;
-    /*left line */
-
-    position: absolute;
-    pointer-events: none;
-  }
 `;
 
 const FILTERS_QUERY = gql`

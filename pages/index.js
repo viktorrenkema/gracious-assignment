@@ -1,13 +1,19 @@
-import Head from "next/head";
+// 📦 Packages
 import * as React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { gql, useQuery } from "@apollo/client";
+
+// 🌱 Components
 import CharacterCard from "../components/CharacterCard";
 import Filter from "../components/Filter";
-import { addApolloState, initializeApollo } from "../lib/apolloClient";
 import Link from "next/link";
 
+// 🧰 Utils
+import Head from "next/head";
+import { gql, useQuery } from "@apollo/client";
+import { addApolloState, initializeApollo } from "../lib/apolloClient";
+
+// 💅🏽 Styled Components
 const H1 = styled(motion.h1)`
   font-family: "DM Mono", monospace;
   font-weight: 500;
@@ -137,8 +143,6 @@ export default function Home() {
 
   ///////////
 
-  // console.log(data);
-
   const filterCharacters = () => {
     // If both filters are set to All, return all characters retrieved from API
     if (episodeFilter.label === "All" && locationFilter.label === "All") {
@@ -171,8 +175,6 @@ export default function Home() {
     }
   };
 
-  console.log(filterCharacters());
-
   return (
     <div>
       <Head>
@@ -198,11 +200,6 @@ export default function Home() {
           value={locationFilter.value}
           onChange={setLocationFilter}
         ></Filter>
-        {/* <Filter
-          label={"dimension"}
-          value={dimensionFilter}
-          onChange={setDimensionFilter}
-        ></Filter> */}
         <CharactersGallery
           animate={"show"}
           variants={container}

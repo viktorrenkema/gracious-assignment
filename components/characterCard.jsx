@@ -1,9 +1,16 @@
-import Image from "next/image";
+// 📦 Packages
 import * as React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { Label } from "./Filter";
 
+// 🌱 Components
+import Image from "next/image";
+
+// 🧰 Utils
+
+// 🌀 Variants
+
+// 💅🏽 Styled Components
 const CardContainer = styled(motion.div)`
   padding: 1rem;
   background: white;
@@ -105,9 +112,8 @@ const StyledImage = styled(Image)`
 `;
 
 export default function CharacterCard(props) {
-  const { character, variants, location, href } = props;
+  const { character, variants } = props;
 
-  // console.log(character)
   return (
     <CardContainer variants={variants}>
       <RelativeContainer>
