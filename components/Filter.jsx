@@ -10,6 +10,7 @@ import { gql, useQuery } from "@apollo/client";
 // 🌀 Variants
 
 // 💅🏽 Styled Components
+
 const FilterWrapper = styled.div`
   display: flex;
   padding: 1rem 0rem 0rem 0rem;
