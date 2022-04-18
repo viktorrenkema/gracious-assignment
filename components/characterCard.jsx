@@ -33,6 +33,10 @@ const OverlayDetailsContainer = styled(motion.div)`
 
 const RelativeContainer = styled(motion.div)`
   position: relative;
+  overflow: hidden;
+  height: 200px;
+  width: 200px;
+  border-radius: 16px;
 `;
 
 const AbsoluteShade = styled(motion.div)`
@@ -131,9 +135,18 @@ const idVariants = {
   },
 };
 
+const imageVariants = {
+  default: {
+    transform: "scale(1)",
+  },
+  hover: {
+    transform: "scale(1.2)",
+  },
+};
+
 export default function CharacterCard(props) {
   const [hover, setHover] = React.useState(false);
-  const { character, variants } = props;
+  const { character, variants, animate, initial } = props;
 
   const str = character.name;
   const maxLen = 17;
@@ -149,6 +162,8 @@ export default function CharacterCard(props) {
 
   return (
     <CardContainer
+      animate={animate}
+      initial={initial}
       variants={variants}
       onHoverStart={() => {
         setHover(true);
@@ -158,12 +173,18 @@ export default function CharacterCard(props) {
       }}
     >
       <RelativeContainer>
-        <StyledImage
-          width={200}
-          height={200}
-          alt={`An image of ${character.name}`}
-          src={character.image}
-        ></StyledImage>
+        <motion.div
+          variants={imageVariants}
+          initial={"default"}
+          animate={hover ? "hover" : "default"}
+        >
+          <StyledImage
+            width={200}
+            height={200}
+            alt={`An image of ${character.name}`}
+            src={character.image}
+          ></StyledImage>
+        </motion.div>
         <AbsoluteShade>
           {" "}
           <OverlayDetailsContainer>

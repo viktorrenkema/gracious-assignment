@@ -246,13 +246,15 @@ export default function Home() {
           {filterCharacters().map((char) => {
             return (
               <Link key={char.id} href={`/character/${char.id}`} passHref>
-                <a>
+                <motion.a>
                   <CharacterCard
                     variants={client}
+                    initial="hidden"
+                    animate={"show"}
                     key={char.id}
                     character={char}
                   ></CharacterCard>
-                </a>
+                </motion.a>
               </Link>
             );
           })}
