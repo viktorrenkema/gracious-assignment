@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 // 🌱 Components
-import CharacterCard from "../components/CharacterCard";
-import Filter from "../components/Filter";
+import CharacterCard from "../components/characterCard";
+import Filter from "../components/filter";
 import Link from "next/link";
-import { DetailType } from "../components/CharacterCard";
+import { DetailType } from "../components/characterCard";
 
 // 🧰 Utils
 import Head from "next/head";
