@@ -8,8 +8,6 @@ import Image from "next/image";
 
 // 🧰 Utils
 
-// 🌀 Variants
-
 // 💅🏽 Styled Components
 const CardContainer = styled(motion.div)`
   padding: 1rem;
@@ -20,6 +18,7 @@ const CardContainer = styled(motion.div)`
   gap: 8px;
   width: 232px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
 `;
 
 const OverlayDetailsContainer = styled(motion.div)`
@@ -117,6 +116,7 @@ const StyledImage = styled(Image)`
   box-shadow: 0px 2px 8px 0px rgb(0 0 0 / 12%);
 `;
 
+// 🌀 Variants
 const nameVariants = {
   default: {
     y: 0,
@@ -165,12 +165,12 @@ export default function CharacterCard(props) {
       animate={animate}
       initial={initial}
       variants={variants}
-      // onHoverStart={() => {
-      //   setHover(true);
-      // }}
-      // onHoverEnd={() => {
-      //   setHover(false);
-      // }}
+      onHoverStart={() => {
+        setHover(true);
+      }}
+      onHoverEnd={() => {
+        setHover(false);
+      }}
     >
       <RelativeContainer>
         <motion.div

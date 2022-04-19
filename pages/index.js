@@ -6,7 +6,6 @@ import styled from "styled-components";
 // 🌱 Components
 import CharacterCard from "../components/characterCard";
 import Filter from "../components/filter";
-import Link from "next/link";
 import { DetailType } from "../components/characterCard";
 
 // 🧰 Utils
@@ -245,17 +244,13 @@ export default function Home() {
         >
           {filterCharacters().map((char) => {
             return (
-              <Link key={char.id} href={`/character/${char.id}`} passHref>
-                <motion.a>
-                  <CharacterCard
-                    variants={client}
-                    initial="hidden"
-                    animate={"show"}
-                    key={char.id}
-                    character={char}
-                  ></CharacterCard>
-                </motion.a>
-              </Link>
+              <CharacterCard
+                variants={client}
+                initial="hidden"
+                animate={"show"}
+                key={char.id}
+                character={char}
+              ></CharacterCard>
             );
           })}
         </CharactersGallery>
