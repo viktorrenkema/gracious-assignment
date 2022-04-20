@@ -145,7 +145,7 @@ export default function Home() {
     setQueryPage((queryPage) => queryPage + 1);
     fetchMore({ variables: { id: queryPage } });
     setCharacters(characters.concat(data.characters.results));
-  }, [fetchMore, data]);
+  }, [fetchMore, data, queryPage, characters]);
 
   // Old, working but only returning first 20 results
   // React.useEffect(() => {
