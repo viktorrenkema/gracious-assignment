@@ -139,19 +139,19 @@ export default function Home() {
   ///////////////
 
   // Gets *all* characters (note: 800+, not performant)
-  // React.useEffect(() => {
-  //   if (!data) return;
-  //   if (queryPage >= Math.ceil(data.characters.info.count / 20)) return;
-  //   setQueryPage((queryPage) => queryPage + 1);
-  //   fetchMore({ variables: { id: queryPage } });
-  //   setCharacters(characters.concat(data.characters.results));
-  // }, [fetchMore, data]);
-
-  // Old, working but only returning first 20 results
   React.useEffect(() => {
     if (!data) return;
-    if (data.characters) setCharacters(data.characters.results);
-  }, [data]);
+    if (queryPage >= Math.ceil(data.characters.info.count / 20)) return;
+    setQueryPage((queryPage) => queryPage + 1);
+    fetchMore({ variables: { id: queryPage } });
+    setCharacters(characters.concat(data.characters.results));
+  }, [fetchMore, data]);
+
+  // Old, working but only returning first 20 results
+  // React.useEffect(() => {
+  //   if (!data) return;
+  //   if (data.characters) setCharacters(data.characters.results);
+  // }, [data]);
 
   ///////////
 
@@ -188,23 +188,7 @@ export default function Home() {
   };
 
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      transition={{
-        type: "spring",
-        mass: 0.35,
-        stiffness: 75,
-        duration: 0.3,
-      }}
-    >
+    <motion.div>
       <Head>
         <title>Rick and Morty finder</title>
         <meta

@@ -94,7 +94,7 @@ export default function Filter({ filterType, value, onChange, label }) {
       fetchMore({ variables: { locationPage: locPage, episodePage: epPage } });
       setEpisodes(episodes.concat(data.episodes.results));
     }
-  }, [fetchMore, data]);
+  }, [fetchMore, data, filterType, locPage, epPage, locations, episodes]);
 
   function handleChange(event) {
     const value = event.target.value;

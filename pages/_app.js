@@ -1,7 +1,6 @@
 // 🧰 Utils
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
-import { AnimatePresence } from "framer-motion";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -9,9 +8,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <AnimatePresence exitBeforeEnter>
-        <Component {...pageProps} />
-      </AnimatePresence>
+      <Component {...pageProps} />
     </ApolloProvider>
   );
 }
